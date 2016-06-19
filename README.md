@@ -19,3 +19,5 @@ version 0.11.1.
 
 7. Run `grunt serve` to start the app
 
+## Tools Used
+  The project is built using Angularjs framework.
