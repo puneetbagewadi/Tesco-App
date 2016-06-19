@@ -15,5 +15,7 @@ Open node command prompt under project's root folder and run `npm install`
 
 Run `npm install -g bower` and `npm install -g grunt`
 
+Open Git command prompt under project's root folder and run `bower install`
+
 Run `grunt serve` to start the app
 
