@@ -1,0 +1,122 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-3 col-sm-offset-6 sort-container">
+            <form class="form-inline pull-right">
+                <div class="form-group">
+                    <label for="sort-select">Sort By:</label>
+                    <select class="form-control pull-right" id="sort-select" ng-change="products.sort()" ng-model="sortPreference">
+                        <option value="">Select</option>
+                        <option value="asc">Price (Low to High)</option>
+                        <option value="desc">Price (High to Low)</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9" id="items-div">
+            <div class="col-md-4 product" ng-repeat="product in products.list">
+                <div class="top-container">
+                    <img ng-src="{{product.Image}}"/>
+                    <strong ng-bind="product.Name"></strong>
+                    <div class="rewards" ng-show="product.Promotions.length">
+                        <div class="row" ng-repeat="promotion in product.Promotions">
+                            <span class="col-sm-12" ng-show="promotion.Type==='Reward'" ng-bind="promotion.Description"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-container">
+                    <div class="row">
+                        <div class="col-sm-12 prices-container">
+                            <strong class="pull-left">£{{product.Price}}</strong>
+                            <span class="pull-right">(£{{product.UnitPrice}}/each)</span>
+                        </div>
+                    </div>
+                    <div class="row quantity-container" ng-init="quantity=minQuantity">
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                              <span class="input-group-btn">
+                                  <button type="button" class="btn btn-default btn-number"
+                                          ng-click="quantity = decrQuantity(quantity)">
+                                      <span class="glyphicon glyphicon-minus"></span>
+                                  </button>
+                              </span>
+                              <input type="text" class="form-control input-number" ng-model="quantity"
+                                     min="{{minQuantity}}" max="{{maxQuantity}}">
+                              <span class="input-group-btn">
+                                  <button type="button" class="btn btn-default btn-number"
+                                          ng-click="quantity = incrQuantity(quantity)">
+                                      <span class="glyphicon glyphicon-plus"></span>
+                                  </button>
+                              </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <button class="btn btn-primary pull-right" ng-disabled="quantity==0"
+                                    ng-click="basket.addItem(product, quantity)">Add</button>
+                        </div>
+                    </div>
+                    <div class="row basket-count">
+                        <p class="col-sm-12 text-success"
+                           ng-show="product.quantity&&product.quantity>0">{{product.quantity}} in basket
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-3 basket-container" id="checkout-div">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Basket <span class="pull-right">{{basket.totalItems}} items</span></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row" ng-repeat="item in basket.list">
+                        <div class="basket-item col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-3 basket-img">
+                                    <img ng-src="{{item.Image}}"/>
+                                </div>
+                                <div class="col-sm-8 basket-name">
+                                    <small>{{item.Name}}</small>
+                                </div>
+                                <div class="col-sm-1 basket-remove">
+                                    <span class="glyphicon glyphicon-remove" ng-click="basket.removeItem(item)"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                      <span class="input-group-btn">
+                                          <button type="button" class="btn btn-default btn-number"
+                                                  ng-click="item.quantity = decrQuantity(item.quantity, true)">
+                                              <span class="glyphicon glyphicon-minus"></span>
+                                          </button>
+                                      </span>
+                                      <input type="text" class="form-control input-number" ng-model="item.quantity"
+                                                   min="{{minQuantity}}" max="{{maxQuantity}}">
+                                      <span class="input-group-btn">
+                                          <button type="button" class="btn btn-default btn-number"
+                                                  ng-click="item.quantity = incrQuantity(item.quantity, true)">
+                                              <span class="glyphicon glyphicon-plus"></span>
+                                          </button>
+                                      </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-sm-offset-1">
+                                    <strong>£{{item.Price*item.quantity | number: 2}}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p ng-hide="basket.list.length" class="text-warning">
+                        No items in your basket.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
